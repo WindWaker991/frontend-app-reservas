@@ -28,7 +28,7 @@ const resetPass = () => {
       return alert("Passwords do not match");
     }
     try {
-      const res = await axios.patch("http://localhost:3000/users/update", {
+      const res = await axios.patch("http://localhost:3002/auth/update", {
         email,
         password,
         newPassword,

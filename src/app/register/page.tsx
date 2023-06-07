@@ -6,7 +6,7 @@ import { City } from "@/config/interfaces";
 
 const Register = () => {
   const [name, setName] = useState("");
-  const [cityId, setCityId] = useState<string>();
+  const [city, setCity] = useState<string>();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cPass, setcPass] = useState("");
@@ -15,7 +15,7 @@ const Register = () => {
 
   useEffect(() => {
     const getCities = async () => {
-      const response = await axios.get("http://localhost:3000/city");
+      const response = await axios.get("http://localhost:3001/city");
       setCities(response.data);
     };
 
@@ -27,7 +27,7 @@ const Register = () => {
   }
 
   function handleCityChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    setCityId(e.target.value);
+    setCity(e.target.value);
   }
 
   function handleEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -45,9 +45,9 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/auth/signup", {
+      const response = await axios.post("http://localhost:3002/auth/signup", {
         name,
-        cityId,
+        city,
         email,
         password,
       });
