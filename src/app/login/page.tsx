@@ -26,7 +26,7 @@ const Login = () => {
       });
       const { token } = response.data;
       localStorage.setItem("token", token);
-      return router.push("/");
+      return router.push("/home");
     } catch (error) {
       console.log(error);
     }
