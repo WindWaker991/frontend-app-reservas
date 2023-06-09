@@ -23,6 +23,11 @@ const Profile = () => {
     router.push("/home");
   }
 
+  function handleEditClick() {
+    
+    router.push("/profile/edit");
+  }
+
   return (
     <body className="bg-gray-300 antialiased">
       <div className="container mx-auto my-60">
@@ -47,12 +52,12 @@ const Profile = () => {
                 <span></span>
               </p>
               <div className="my-5 px-6">
-                <a
-                  href="#"
+                <button
                   className="text-gray-200 block rounded-lg text-center font-medium leading-6 px-6 py-3 bg-gray-900 hover:bg-black hover:text-white"
+                  onClick={handleEditClick}
                 >
                   Editar <span className="font-bold">datos</span>
-                </a>
+                </button>
               </div>
 
               <div className="w-full">
