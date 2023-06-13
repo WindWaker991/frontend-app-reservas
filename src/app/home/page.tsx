@@ -10,6 +10,10 @@ const home = () => {
     router.push("/profile");
   }
 
+  function handleClosedSessionClick() {
+    localStorage.removeItem("token");
+    router.push("/login");
+  }
   return (
     <div className="bg-gray-100">
       <nav className="bg-white border-gray-200 dark:bg-gray-900">
@@ -40,6 +44,12 @@ const home = () => {
                 src="/docs/images/people/profile-picture-3.jpg"
                 alt="user photo"
               ></img>
+            </button>
+            
+            <button className="text-gray-200 block rounded-lg text-center font-medium leading-6 px-6 py-3 bg-gray-900 hover:bg-black hover:text-white"
+              onClick={handleClosedSessionClick}
+            >
+              <span className="font-bold">Cerrar Sesion</span>
             </button>
             <div
               className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"

@@ -2,30 +2,42 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { City } from "@/config/interfaces";
+import { City, User } from "@/config/interfaces";
+import EditProfile from "@/components/EditProfile";
+import ShowProfile from "@/components/ShowProfile";
 
 const Profile = () => {
-  const [city, setCity] = useState<string>();
-  const [cities, setCities] = useState<City[]>();
+  const [city, setCity] = useState<City>();
+  const [user, setUser] = useState<User>();
+  const [showEdit, setShowEdit] = useState<boolean>(false);
+  const router = useRouter();
 
   useEffect(() => {
-    const getCities = async () => {
-      const response = await axios.get("http://localhost:3001/city");
-      setCities(response.data);
-    };
+    const getUser = async () => {
+      const token = localStorage.getItem("token");
+      const options = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+      const response = await axios.get
+        ("http://localhost:3002/auth/profile", options)
+      setUser(response.data);
+      const responseCity = await axios.post("http://localhost:3001/city/getOne", response.data.city);
+      console.log(responseCity.data);
+      setCity(responseCity.data);
 
-    getCities();
+    }
+
+    getUser();
   }, []);
-
-  const router = useRouter();
 
   function handleBackClick() {
     router.push("/home");
   }
 
   function handleEditClick() {
-    
-    router.push("/profile/edit");
+    setShowEdit(!showEdit);
   }
 
   return (
@@ -43,14 +55,8 @@ const Profile = () => {
 
             <div className="mt-16">
               <h1 className="font-bold text-center text-3xl text-gray-900">
-                Pepito
+                {user?.name}
               </h1>
-              <p className="text-center text-sm text-gray-400 font-medium">
-                Estudiante al borde del colapso
-              </p>
-              <p>
-                <span></span>
-              </p>
               <div className="my-5 px-6">
                 <button
                   className="text-gray-200 block rounded-lg text-center font-medium leading-6 px-6 py-3 bg-gray-900 hover:bg-black hover:text-white"
@@ -64,45 +70,12 @@ const Profile = () => {
                 <h3 className="font-medium text-gray-900 text-left px-6">
                   Datos personales
                 </h3>
-                <div className="mt-5 w-full flex flex-col items-center overflow-hidden text-sm">
-                  <p className="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
-                    <img
-                      src="https://avatars0.githubusercontent.com/u/35900628?v=4"
-                      alt=""
-                      className="rounded-full h-6 shadow-md inline-block mr-2"
-                    ></img>
-                    Nombre
-                  </p>
+                {
+                  showEdit ? <EditProfile user={user!} city={city!}
+                    setUser={setUser}
+                  /> : <ShowProfile user={user!} city={city!} />
 
-                  <p className="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150">
-                    <img
-                      src="https://avatars0.githubusercontent.com/u/35900628?v=4"
-                      alt=""
-                      className="rounded-full h-6 shadow-md inline-block mr-2"
-                    ></img>
-                    Nombre de usuario
-                  </p>
-
-                  <div>
-                    <label
-                      htmlFor="city"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      City
-                    </label>
-                    <select
-                      name="cities"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 
-                                focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    >
-                      {cities?.map((city) => (
-                        <option key={city.id} value={city.id}>
-                          {city.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
+                }
               </div>
             </div>
           </div>
