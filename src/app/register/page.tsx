@@ -4,23 +4,20 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { City } from "@/config/interfaces";
 
-const Register = () => {
+async function getCities(): Promise<City[]> {
+  const response = await axios.get(process.env.NEXT_PUBLIC_INSTITUTION + "/city");
+  return response.data;
+}
+
+const Register = async () => {
+  const cities: City[] = await getCities();
   const [name, setName] = useState("");
   const [city, setCity] = useState<string>();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cPass, setcPass] = useState("");
-  const [cities, setCities] = useState<City[]>(); // [{}
   const router = useRouter();
 
-  useEffect(() => {
-    const getCities = async () => {
-      const response = await axios.get("http://localhost:3001/city");
-      setCities(response.data);
-    };
-
-    getCities();
-  }, []);
 
   function handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
     setName(e.target.value);
@@ -45,7 +42,7 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:3002/auth/signup", {
+      const response = await axios.post(process.env.NEXT_PUBLIC_USERS + "/auth/signup", {
         name,
         city,
         email,

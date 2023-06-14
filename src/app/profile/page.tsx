@@ -21,9 +21,9 @@ const Profile = () => {
         },
       }
       const response = await axios.get
-        ("http://localhost:3002/auth/profile", options)
+        (process.env.NEXT_PUBLIC_USERS + "/auth/profile", options)
       setUser(response.data);
-      const responseCity = await axios.post("http://localhost:3001/city/getOne", response.data.city);
+      const responseCity = await axios.post(process.env.NEXT_PUBLIC_INSTITUTION + "/city/getOne", response.data.city);
       console.log(responseCity.data);
       setCity(responseCity.data);
 

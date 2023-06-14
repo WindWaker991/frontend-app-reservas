@@ -15,7 +15,7 @@ const EditProfile: React.FC<Props> = ({ user, city, setUser }) => {
 
     useEffect(() => {
         const getCities = async () => {
-            const response = await axios.get("http://localhost:3001/city");
+            const response = await axios.get(process.env.NEXT_PUBLIC_INSTITUTION + "/city");
             const data = response.data;
             setCities(data);
         };
@@ -32,7 +32,7 @@ const EditProfile: React.FC<Props> = ({ user, city, setUser }) => {
         };
 
         const response = await axios.patch(
-            "http://localhost:3002/auth/updateUser",
+            process.env.NEXT_PUBLIC_USERS + "/auth/updateUser",
             {
                 name: auxUser.name,
                 city: auxCityID,

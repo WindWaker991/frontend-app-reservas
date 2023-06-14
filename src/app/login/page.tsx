@@ -20,7 +20,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3002/auth/login", {
+      const response = await axios.post(process.env.NEXT_PUBLIC_USERS + "/auth/login", {
         email,
         password,
       });
