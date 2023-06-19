@@ -10,18 +10,8 @@ interface Props {
 
 const EditProfile: React.FC<Props> = ({ user, city, setUser }) => {
     const [auxUser, setAuxUser] = useState<User>(user);
-    const [cities, setCities] = useState<City[]>([]);
-    const [auxCityID, setAuxCityID] = useState<string>(city.id);
-
-    useEffect(() => {
-        const getCities = async () => {
-            const response = await axios.get(process.env.NEXT_PUBLIC_INSTITUTION + "/city");
-            const data = response.data;
-            setCities(data);
-        };
-
-        getCities();
-    }, []);
+    const [City, setCity] = useState<string>();
+    const [auxCity, setAuxCity] = useState<City>(city);
 
     const handleSaveClick = async () => {
         const token = localStorage.getItem("token");
@@ -35,7 +25,7 @@ const EditProfile: React.FC<Props> = ({ user, city, setUser }) => {
             process.env.NEXT_PUBLIC_USERS + "/auth/updateUser",
             {
                 name: auxUser.name,
-                city: auxCityID,
+                city: auxCity.id,
                 email: auxUser.email,
                 password: user.password,
 
@@ -72,18 +62,7 @@ const EditProfile: React.FC<Props> = ({ user, city, setUser }) => {
                 >
                     City
                 </label>
-                <select
-                    name="cities"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 
-                    focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    onChange={(e) => setAuxCityID(e.target.value)}
-                >
-                    {cities?.map((city) => (
-                        <option key={city.id} value={city.id}>
-                            {city.name}
-                        </option>
-                    ))}
-                </select>
+
             </div>
             <div className="my-5 px-6">
                 <button
