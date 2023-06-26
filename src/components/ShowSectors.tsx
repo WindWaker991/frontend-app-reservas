@@ -4,10 +4,9 @@ import React from 'react'
 
 const ShowSectors = () => {
     const { selectedInstitution } = useInstitutionContext();
-    //console.log(selectedInstitution);
 
     return (
-        <div>{selectedInstitution}</div>
+        <div>{selectedInstitution?.name}</div>
     )
 }
 

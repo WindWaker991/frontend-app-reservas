@@ -1,12 +1,12 @@
 'use client';
-//import { useAuthContext } from "@/context/AuthContext";
+import { useAuthContext } from "@/context/AuthContext";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 
 const ShowLogin = () => {
-    //const { setIsAuthenticated } = useAuthContext(); //usar en otro componenteS
+    const { login } = useAuthContext();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const router = useRouter();
@@ -28,9 +28,7 @@ const ShowLogin = () => {
                 password,
             });
             const { token } = response.data;
-            localStorage.setItem("token", token);
-            //verificar token
-
+            login(token);
             return router.push("/home");
         } catch (error) {
             console.log(error);

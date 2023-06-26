@@ -2,8 +2,9 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { CityContextProvider } from "@/context/CityContext";
-import { InstitutionContextProvider } from "@/context/InstitutionContext";
-//import { AuthContextProvider } from "@/context/AuthContext";
+import AuthContextProvider, { AuthContext } from "@/context/AuthContext";
+import InstitutionContextProvider from "@/context/InstitutionContext";
+
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -21,12 +22,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-
-        <CityContextProvider>
-          <InstitutionContextProvider>
-            {children}
-          </InstitutionContextProvider>
-        </CityContextProvider>
+        <AuthContextProvider>
+          <CityContextProvider>
+            <InstitutionContextProvider>
+              {children}
+            </InstitutionContextProvider>
+          </CityContextProvider>
+        </AuthContextProvider>
 
 
       </body>

@@ -1,4 +1,5 @@
 'use client'
+import { Institution } from '@/config/interfaces';
 import { useInstitutionContext } from '@/context/InstitutionContext';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
@@ -11,9 +12,9 @@ const ShowInstitutions: React.FC = () => {
         setFilterInstitutions(institutions);
     }, [institutions]);
 
-    function handleInstitutionClick(e: React.MouseEvent<HTMLButtonElement>) {
-        setSelectedInstitution(e.currentTarget.value);
-        router.push("/sector")
+    function handleInstitutionClick(institution: Institution) {
+        setSelectedInstitution(institution);
+        router.push("/home/sector/" + institution.name)
     }
     return (
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -32,8 +33,8 @@ const ShowInstitutions: React.FC = () => {
                                     ></img>
                                 </div>
                                 <h3 className="mt-6 text-sm text-gray-500">
-                                    <button value={institution.name}
-                                        onClick={handleInstitutionClick}
+                                    <button
+                                        onClick={() => handleInstitutionClick(institution)}
                                     >
                                         <span className="absolute inset-0"></span>
                                     </button>

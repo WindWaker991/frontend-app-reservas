@@ -1,22 +1,27 @@
 'use client';
 import { Institution } from "@/config/interfaces";
 import React from "react";
-import { createContext, useState } from "react";
+import { ReactNode, createContext, useState } from "react";
 
 type InstitutionContextType = {
     institutions: Institution[];
     setInstitutions: (institution: Institution[]) => void;
-    selectedInstitution: string | undefined;
-    setSelectedInstitution: (institution: string) => void;
+    selectedInstitution: Institution | undefined;
+    setSelectedInstitution: (institution: Institution) => void;
     filterInstitutions: Institution[];
     setFilterInstitutions: (institution: Institution[]) => void;
 };
 
 export const InstitutionContext = createContext<InstitutionContextType | null>(null);
 
-export const InstitutionContextProvider = ({ children }) => {
+export default function InstitutionContextProvider({
+    children,
+}: {
+    children: ReactNode;
+
+}) {
     const [institutions, setInstitutions] = useState<Institution[]>([]);
-    const [selectedInstitution, setSelectedInstitution] = useState<string>();
+    const [selectedInstitution, setSelectedInstitution] = useState<Institution>();
     const [filterInstitutions, setFilterInstitutions] = useState<Institution[]>([]);
     return (
         <InstitutionContext.Provider value={{

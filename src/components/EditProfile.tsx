@@ -1,6 +1,7 @@
 import { City, User } from "@/config/interfaces";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import ListCities from "./ListCities";
 
 interface Props {
     user: User;
@@ -61,6 +62,7 @@ const EditProfile: React.FC<Props> = ({ user, city, setUser }) => {
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                     City
+                    <ListCities />
                 </label>
 
             </div>

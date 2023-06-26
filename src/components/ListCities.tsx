@@ -1,7 +1,6 @@
 'use client';
 import { City } from "@/config/interfaces";
 import { useCityContext } from "@/context/CityContext";
-import axios from "axios";
 import { useState } from "react";
 
 

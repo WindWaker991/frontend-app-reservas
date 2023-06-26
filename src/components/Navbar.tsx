@@ -1,8 +1,8 @@
 'use client';
 import { useRouter } from "next/navigation";
-import ListInstitution from "./ListInstitution";
 import { useEffect, useState } from "react";
 import { useInstitutionContext } from "@/context/InstitutionContext";
+import Link from "next/link";
 
 
 export const Navbar = () => {
@@ -15,10 +15,7 @@ export const Navbar = () => {
 
     const router = useRouter();
 
-    function handleClosedSessionClick() {
-        localStorage.removeItem("token");
-        router.push("/login");
-    }
+
 
     function handleProfileClick() {
         router.push("/profile");
@@ -27,12 +24,8 @@ export const Navbar = () => {
     return (
         <nav className="bg-white border-gray-200 dark:bg-gray-900">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                <a href="https://flowbite.com/" className="flex items-center">
-                    <img
-                        src="https://flowbite.com/docs/images/logo.svg"
-                        className="h-8 mr-3"
-                        alt="Flowbite Logo"
-                    />
+                <a href="" className="flex items-center">
+
                     <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
                         App Reservas
                     </span>
@@ -55,11 +48,11 @@ export const Navbar = () => {
                         ></img>
                     </button>
 
-                    <button className="text-gray-200 block rounded-lg text-center font-medium leading-6 px-6 py-3 bg-gray-900 hover:bg-black hover:text-white"
-                        onClick={handleClosedSessionClick}
+                    <Link href="home/logout" className="text-gray-200 block rounded-lg text-center font-medium leading-6 px-6 py-3 bg-gray-900 hover:bg-black hover:text-white"
+
                     >
                         <span className="font-bold">Cerrar Sesion</span>
-                    </button>
+                    </Link>
                     <button
                         data-collapse-toggle="mobile-menu-2"
                         type="button"
@@ -83,7 +76,7 @@ export const Navbar = () => {
                         </svg>
                     </button>
                 </div>
-                <ListInstitution />
+
                 <div
                     className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
                     id="mobile-menu-2"
@@ -99,7 +92,7 @@ export const Navbar = () => {
                                     value={findInstitutionName}
                                     onChange={(e) => setFindInstitutionName(e.target.value)}
                                 />
-                                <button type="submit" className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+
                             </div>
                         </div>
                     </form>

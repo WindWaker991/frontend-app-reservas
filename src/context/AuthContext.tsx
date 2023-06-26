@@ -1,20 +1,44 @@
-'use client'
-import {
-    ReactNode,
-    createContext,
-    useCallback,
-    useContext,
-    useMemo,
-} from "react";
+'use client';
+import { ReactNode, createContext, useCallback, useContext, useMemo } from "react";
+import Cookies from 'js-cookie';
 
-type AuthTokens = {
+type AuthContextType = {
     token: string;
-    refresh_token: string;
+    refreshToken: string;
 };
 
-const AUTH_TOKENS_KEY = "NEXT_JS_AUTH";
-
 export const AuthContext = createContext({
-    login: (authTokens: AuthTokens) => { },
+    login: (authTokens: AuthContextType) => { },
     logout: () => { },
 });
+
+export default function AuthContextProvider({
+    children,
+}: {
+    children: ReactNode;
+
+}) {
+    const authTokensInLocalStorage = Cookies.get('authTokens');
+
+    const login = useCallback(function (authTokens: AuthContextType) {
+        Cookies.set('authTokens', JSON.stringify(authTokens));
+    }, []);
+
+    const logout = useCallback(function () {
+        Cookies.remove('authTokens');
+    }, []);
+
+    const value = useMemo(
+        () => ({
+            login,
+            logout,
+        }),
+        [login, logout]
+    );
+
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
+
+export function useAuthContext() {
+    return useContext(AuthContext);
+}
