@@ -14,7 +14,7 @@ const ShowInstitutions: React.FC = () => {
 
     function handleInstitutionClick(institution: Institution) {
         setSelectedInstitution(institution);
-        router.push("/home/sector/" + institution.name)
+        router.push("/home/sector/" + institution.id)
     }
     return (
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
