@@ -1,11 +1,8 @@
-
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { CityContextProvider } from "@/context/CityContext";
 import AuthContextProvider, { AuthContext } from "@/context/AuthContext";
 import InstitutionContextProvider from "@/context/InstitutionContext";
-
-
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,13 +21,9 @@ export default function RootLayout({
       <body className="min-h-screen">
         <AuthContextProvider>
           <CityContextProvider>
-            <InstitutionContextProvider>
-              {children}
-            </InstitutionContextProvider>
+            <InstitutionContextProvider>{children}</InstitutionContextProvider>
           </CityContextProvider>
         </AuthContextProvider>
-
-
       </body>
     </html>
   );
