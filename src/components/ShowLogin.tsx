@@ -28,7 +28,7 @@ const ShowLogin = () => {
                 password,
             });
             const { token } = response.data;
-            login(token);
+            login();
             return router.push("/home");
         } catch (error) {
             console.log(error);

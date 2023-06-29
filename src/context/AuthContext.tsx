@@ -8,24 +8,26 @@ type AuthContextType = {
 };
 
 export const AuthContext = createContext({
-    login: (authTokens: AuthContextType) => { },
+    login: () => { },
     logout: () => { },
 });
 
+
+const TOKEN_NAME = 'access_token';
 export default function AuthContextProvider({
     children,
 }: {
     children: ReactNode;
 
 }) {
-    const authTokensInLocalStorage = Cookies.get('authTokens');
 
-    const login = useCallback(function (authTokens: AuthContextType) {
-        Cookies.set('authTokens', JSON.stringify(authTokens));
+    const login = useCallback(function () {
+        const token = Cookies.get(TOKEN_NAME);
+        Cookies.set(TOKEN_NAME, JSON.stringify(token));
     }, []);
 
     const logout = useCallback(function () {
-        Cookies.remove('authTokens');
+        Cookies.remove(TOKEN_NAME);
     }, []);
 
     const value = useMemo(
