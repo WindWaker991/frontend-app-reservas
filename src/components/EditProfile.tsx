@@ -15,12 +15,7 @@ const EditProfile: React.FC<Props> = ({ user, city, setUser }) => {
     const [auxCity, setAuxCity] = useState<City>(city);
 
     const handleSaveClick = async () => {
-        const token = localStorage.getItem("token");
-        const options = {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        };
+
 
         const response = await axios.patch(
             process.env.NEXT_PUBLIC_USERS + "/auth/updateUser",
@@ -31,7 +26,9 @@ const EditProfile: React.FC<Props> = ({ user, city, setUser }) => {
                 password: user.password,
 
             },
-            options
+            {
+                withCredentials: true,
+            }
         );
         setUser(response.data);
     };
@@ -62,7 +59,9 @@ const EditProfile: React.FC<Props> = ({ user, city, setUser }) => {
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                     City
-                    <ListCities />
+                    <ListCities
+                        setCity={setCity}
+                    />
                 </label>
 
             </div>

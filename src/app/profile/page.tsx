@@ -14,14 +14,12 @@ const Profile = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      const token = localStorage.getItem("token");
-      const options = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+
       const response = await axios.get
-        (process.env.NEXT_PUBLIC_USERS + "/auth/profile", options)
+        (process.env.NEXT_PUBLIC_USERS + "/auth/profile", {
+          withCredentials: true,
+        })
+      console.log(response);
       setUser(response.data);
       const responseCity = await axios.post(process.env.NEXT_PUBLIC_INSTITUTION + "/city/getOne", response.data.city);
       console.log(responseCity.data);

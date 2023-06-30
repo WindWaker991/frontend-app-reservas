@@ -26,7 +26,9 @@ const ShowLogin = () => {
             const response = await axios.post(process.env.NEXT_PUBLIC_USERS + "/auth/login", {
                 email,
                 password,
-            });
+            },
+                { withCredentials: true });
+
             const { token } = response.data;
             login();
             return router.push("/home");

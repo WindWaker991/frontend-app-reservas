@@ -1,3 +1,4 @@
+import { Navbar } from "@/components/Navbar";
 import ShowSectors from "@/components/ShowSectors";
 import { Institution } from "@/config/interfaces";
 import axios from "axios";
@@ -13,6 +14,7 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
 
   return (
     <div className="bg-gray-100 w-screen h-screen">
+      <Navbar />
       <ShowSectors institution={institution} />
     </div>
   );
