@@ -1,7 +1,9 @@
-"use client"
+"use client";
 import { Objects, Sector } from "@/config/interfaces";
 import { useAuthContext } from "@/context/AuthContext";
+import axios from "axios";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Calendar from "react-calendar";
 interface Props {
@@ -12,13 +14,12 @@ interface Props {
 const ShowObjects: React.FC<Props> = ({ selectedSector, handleHidePopup }) => {
   const [selectedObjects, setSelectedObjects] = useState<Objects>();
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const {
-    login
-  } = useAuthContext();
+  const router = useRouter();
+  const { login } = useAuthContext();
 
   const enableButton = () => {
     return selectedObjects ? false : true;
-  }
+  };
 
   const handleChangeObject = (objects: Objects) => {
     setSelectedObjects(objects);
@@ -28,17 +29,20 @@ const ShowObjects: React.FC<Props> = ({ selectedSector, handleHidePopup }) => {
     setSelectedDate(date);
   };
 
-  const handleBookings = () => {
-    const data = {
-      create: {
+  const handleBookings = async () => {
+    const response = await axios.post(
+      process.env.NEXT_PUBLIC_USERS + "/auth/addBooking",
+      {
         date: selectedDate,
-        userId: Cookies.get('userId'),
+        objectId: selectedObjects?.id,
       },
-      objects: selectedObjects
-    };
-    console.log(data);
+      {
+        withCredentials: true,
+      }
+    );
+    console.log(response.data);
+    router.push("/home/booking/" + response.data.id);
   };
-
 
   return (
     <div className="fixed z-10 h-screen w-screen flex item-center justify-center inset-0 bg-black bg-opacity-50">
@@ -90,10 +94,7 @@ const ShowObjects: React.FC<Props> = ({ selectedSector, handleHidePopup }) => {
             Reservar
           </button>
         </div>
-        <Calendar
-          value={selectedDate}
-          onChange={handleChangeDate}
-        />
+        <Calendar value={selectedDate} onChange={handleChangeDate} />
       </div>
     </div>
   );

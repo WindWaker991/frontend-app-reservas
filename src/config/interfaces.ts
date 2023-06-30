@@ -28,3 +28,10 @@ export interface Objects {
   id: string;
   number: string;
 }
+
+export interface Booking {
+  id: string;
+  date: Date;
+  userId: string;
+  object: Objects;
+}

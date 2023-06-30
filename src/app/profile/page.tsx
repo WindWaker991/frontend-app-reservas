@@ -14,18 +14,19 @@ const Profile = () => {
 
   useEffect(() => {
     const getUser = async () => {
-
-      const response = await axios.get
-        (process.env.NEXT_PUBLIC_USERS + "/auth/profile", {
+      const response = await axios.get(
+        process.env.NEXT_PUBLIC_USERS + "/auth/profile",
+        {
           withCredentials: true,
-        })
-      console.log(response);
+        }
+      );
       setUser(response.data);
-      const responseCity = await axios.post(process.env.NEXT_PUBLIC_INSTITUTION + "/city/getOne", response.data.city);
-      console.log(responseCity.data);
+      const responseCity = await axios.post(
+        process.env.NEXT_PUBLIC_INSTITUTION + "/city/getOne",
+        response.data.city
+      );
       setCity(responseCity.data);
-
-    }
+    };
 
     getUser();
   }, []);
@@ -68,12 +69,11 @@ const Profile = () => {
                 <h3 className="font-medium text-gray-900 text-left px-6">
                   Datos personales
                 </h3>
-                {
-                  showEdit ? <EditProfile user={user!} city={city!}
-                    setUser={setUser}
-                  /> : <ShowProfile user={user!} city={city!} />
-
-                }
+                {showEdit ? (
+                  <EditProfile user={user!} city={city!} setUser={setUser} />
+                ) : (
+                  <ShowProfile user={user!} city={city!} />
+                )}
               </div>
             </div>
           </div>
