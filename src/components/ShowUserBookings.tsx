@@ -1,48 +1,12 @@
-"use client";
-import { Objects, Sector } from "@/config/interfaces";
-import { useAuthContext } from "@/context/AuthContext";
-import axios from "axios";
-import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import Calendar from "react-calendar";
+import { Booking } from "@/config/interfaces";
+import React from "react";
+
 interface Props {
-  selectedSector: Sector;
+  bookings: Booking[];
   handleHidePopup: () => void;
 }
 
-const ShowObjects: React.FC<Props> = ({ selectedSector, handleHidePopup }) => {
-  const [selectedObjects, setSelectedObjects] = useState<Objects>();
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const router = useRouter();
-  const { login } = useAuthContext();
-
-  const enableButton = () => {
-    return selectedObjects ? false : true;
-  };
-
-  const handleChangeObject = (objects: Objects) => {
-    setSelectedObjects(objects);
-  };
-
-  const handleChangeDate = (date: Date) => {
-    setSelectedDate(date);
-  };
-
-  const handleBookings = async () => {
-    const response = await axios.post(
-      process.env.NEXT_PUBLIC_USERS + "/auth/addBooking",
-      {
-        date: selectedDate,
-        objectId: selectedObjects?.id,
-      },
-      {
-        withCredentials: true,
-      }
-    );
-    router.push("/home/booking/" + response.data.id);
-  };
-
+const ShowUserBookings: React.FC<Props> = ({ bookings, handleHidePopup }) => {
   return (
     <div className="fixed z-10 h-screen w-screen flex item-center justify-center inset-0 bg-black bg-opacity-50">
       <div className="flex flex-row w-3/4 p-4 mt-4 bg-white rounded-lg h-3/4 sm:mx-auto">
@@ -54,20 +18,20 @@ const ShowObjects: React.FC<Props> = ({ selectedSector, handleHidePopup }) => {
                   <div className="flex flex-row justify-between bg-gray-50">
                     <div className="flex flex-row items-center justify-between">
                       <div className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-400">
-                        Disponibles
+                        Mis reservas
                       </div>
                     </div>
                   </div>
                   <div className="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
-                    {selectedSector.objects.map((objectss, index) => (
+                    {bookings.map((booking, index) => (
                       <div
                         key={index}
                         className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
-                        onClick={() => handleChangeObject(objectss)}
                       >
                         <div className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm text-gray-900 dark:text-gray-200">
-                            {objectss.number}
+                            {booking.object.number}
+                            {booking.date.toString()}
                           </div>
                         </div>
                       </div>
@@ -83,20 +47,10 @@ const ShowObjects: React.FC<Props> = ({ selectedSector, handleHidePopup }) => {
           >
             Cerrar
           </button>
-          <button
-            onClick={handleBookings}
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded
-                        disabled:opacity-50 disabled:cursor-not-allowed
-            "
-            disabled={enableButton()}
-          >
-            Reservar
-          </button>
         </div>
-        <Calendar value={selectedDate} onChange={handleChangeDate} />
       </div>
     </div>
   );
 };
 
-export default ShowObjects;
+export default ShowUserBookings;

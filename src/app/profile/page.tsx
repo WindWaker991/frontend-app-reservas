@@ -2,14 +2,18 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { City, User } from "@/config/interfaces";
+import { Booking, City, User } from "@/config/interfaces";
 import EditProfile from "@/components/EditProfile";
 import ShowProfile from "@/components/ShowProfile";
+import useShowPopup from "@/hooks/useShowPopup";
+import ShowUserBookings from "@/components/ShowUserBookings";
 
 const Profile = () => {
   const [city, setCity] = useState<City>();
   const [user, setUser] = useState<User>();
+  const [bookings, setBookings] = useState<Booking[]>();
   const [showEdit, setShowEdit] = useState<boolean>(false);
+  const { showPopup, handleHidePopup, handleShowPopup } = useShowPopup();
   const router = useRouter();
 
   useEffect(() => {
@@ -27,8 +31,22 @@ const Profile = () => {
       );
       setCity(responseCity.data);
     };
-
     getUser();
+
+    const getBookings = async () => {
+      const res = await axios.get(
+        process.env.NEXT_PUBLIC_USERS + "/auth/profile",
+        {
+          withCredentials: true,
+        }
+      );
+      const User = res.data;
+      const response = await axios.get(
+        process.env.NEXT_PUBLIC_INSTITUTION + "/booking/bookings/" + User?.id
+      );
+      setBookings(response.data);
+    };
+    getBookings();
   }, []);
 
   function handleBackClick() {
@@ -38,6 +56,10 @@ const Profile = () => {
   function handleEditClick() {
     setShowEdit(!showEdit);
   }
+
+  const handleShowBookings = () => {
+    handleShowPopup();
+  };
 
   return (
     <body className="bg-gray-300 antialiased">
@@ -63,6 +85,12 @@ const Profile = () => {
                 >
                   Editar <span className="font-bold">datos</span>
                 </button>
+                <button
+                  className="text-gray-200 block rounded-lg text-center font-medium leading-6 px-6 py-3 bg-gray-900 hover:bg-black hover:text-white"
+                  onClick={handleShowBookings}
+                >
+                  Ver <span className="font-bold">reservas</span>
+                </button>
               </div>
 
               <div className="w-full">
@@ -87,6 +115,12 @@ const Profile = () => {
           </div>
         </div>
       </div>
+      {bookings && showPopup && (
+        <ShowUserBookings
+          bookings={bookings}
+          handleHidePopup={handleHidePopup}
+        />
+      )}
     </body>
   );
 };
